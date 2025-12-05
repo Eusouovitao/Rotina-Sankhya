@@ -124,6 +124,7 @@ export function GanttChart({ routines, filter = "all", onRoutineClick }: GanttCh
             <div
               className="absolute top-0 bottom-0 w-0.5 bg-destructive z-20 pointer-events-none"
               style={{ left: `calc(192px + (100% - 192px) * ${getCurrentTimePosition() / 100})` }}
+              data-testid="current-time-indicator"
             >
               <div className="absolute -top-1 left-1/2 -translate-x-1/2 h-2 w-2 rounded-full bg-destructive" />
             </div>
