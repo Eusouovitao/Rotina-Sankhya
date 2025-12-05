@@ -10,7 +10,7 @@ interface FilterTabsProps {
 const filters: { value: FrequencyType | "all"; label: string; color?: string }[] = [
   { value: "all", label: "Todas" },
   { value: "second", label: "Segundos", color: "text-amber-600 dark:text-amber-400" },
-  { value: "minute", label: "Minutos", color: "text-blue-600 dark:text-blue-400" },
+  { value: "minute", label: "Minutos", color: "text-primary" },
   { value: "hour", label: "Horas", color: "text-purple-600 dark:text-purple-400" },
 ];
 

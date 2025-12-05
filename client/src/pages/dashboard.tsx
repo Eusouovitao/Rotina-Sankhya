@@ -102,7 +102,7 @@ export default function Dashboard() {
       value: minuteCount + hourCount,
       icon: Timer,
       description: "Frequencia regular",
-      color: "text-blue-600 dark:text-blue-400",
+      color: "text-primary",
     },
   ];
 

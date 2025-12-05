@@ -110,7 +110,7 @@ export function AppSidebar({ routines = [] }: AppSidebarProps) {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Por Minuto</span>
-                <Badge className="text-xs bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/20" data-testid="badge-minute-count">
+                <Badge className="text-xs bg-primary/15 text-primary border-primary/20" data-testid="badge-minute-count">
                   {minuteCount}
                 </Badge>
               </div>

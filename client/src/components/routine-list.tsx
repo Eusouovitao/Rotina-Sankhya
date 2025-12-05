@@ -46,9 +46,9 @@ const frequencyColors: Record<FrequencyType, { bg: string; border: string; text:
     text: "text-amber-600 dark:text-amber-400",
   },
   minute: {
-    bg: "bg-blue-500/15",
-    border: "border-blue-500/20",
-    text: "text-blue-600 dark:text-blue-400",
+    bg: "bg-primary/15",
+    border: "border-primary/20",
+    text: "text-primary",
   },
   hour: {
     bg: "bg-purple-500/15",

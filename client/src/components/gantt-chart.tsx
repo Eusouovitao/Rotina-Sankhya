@@ -18,9 +18,9 @@ const frequencyColors: Record<FrequencyType, { bg: string; border: string; text:
     text: "text-amber-700 dark:text-amber-300",
   },
   minute: {
-    bg: "bg-blue-500/20 dark:bg-blue-500/30",
-    border: "border-blue-500/40",
-    text: "text-blue-700 dark:text-blue-300",
+    bg: "bg-primary/20 dark:bg-primary/30",
+    border: "border-primary/40",
+    text: "text-primary",
   },
   hour: {
     bg: "bg-purple-500/20 dark:bg-purple-500/30",
@@ -33,6 +33,12 @@ const frequencyLabels: Record<FrequencyType, string> = {
   second: "Segundo",
   minute: "Minuto",
   hour: "Hora",
+};
+
+const frequencyUnitSuffix: Record<FrequencyType, string> = {
+  second: "s",
+  minute: "min",
+  hour: "H",
 };
 
 const durationUnitLabels: Record<string, string> = {
@@ -155,7 +161,7 @@ export function GanttChart({ routines, filter = "all", onRoutineClick }: GanttCh
                           {frequencyLabels[routine.frequencyType]}
                         </Badge>
                         <span className="text-[10px] text-muted-foreground font-mono">
-                          {routine.startTime}
+                          {routine.frequencyValue}{frequencyUnitSuffix[routine.frequencyType]}
                         </span>
                       </div>
                     </div>
