@@ -1,5 +1,9 @@
 import { type Routine, type InsertRoutine } from "@shared/schema";
 import { randomUUID } from "crypto";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
+import { eq } from "drizzle-orm";
+import { routines } from "@shared/db-schema";
 
 export interface IStorage {
   getAllRoutines(): Promise<Routine[]>;
@@ -148,4 +152,67 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export class PostgresStorage implements IStorage {
+  private db;
+  constructor(connectionString: string) {
+    const pool = new Pool({ connectionString });
+    this.db = drizzle(pool);
+  }
+  private normalize(row: any): Routine {
+    return {
+      id: row.id,
+      name: row.name,
+      description: row.description ?? undefined,
+      frequencyType: row.frequencyType,
+      frequencyValue: row.frequencyValue,
+      startTime: row.startTime,
+      duration: row.duration,
+      durationUnit: row.durationUnit,
+      isActive: row.isActive,
+    };
+  }
+  async getAllRoutines(): Promise<Routine[]> {
+    const rows = await this.db.select().from(routines).orderBy(routines.startTime);
+    return rows.map((r: any) => this.normalize(r));
+  }
+  async getRoutine(id: string): Promise<Routine | undefined> {
+    const rows = await this.db
+      .select()
+      .from(routines)
+      .where(eq(routines.id, id))
+      .limit(1);
+    return rows[0] ? this.normalize(rows[0]) : undefined;
+  }
+  async createRoutine(routine: InsertRoutine): Promise<Routine> {
+    const rows = await this.db.insert(routines).values(routine).returning();
+    return this.normalize(rows[0]);
+  }
+  async updateRoutine(id: string, routine: Partial<InsertRoutine>): Promise<Routine | undefined> {
+    const rows = await this.db
+      .update(routines)
+      .set(routine)
+      .where(eq(routines.id, id))
+      .returning();
+    return rows[0] ? this.normalize(rows[0]) : undefined;
+  }
+  async updateRoutineStatus(id: string, isActive: boolean): Promise<Routine | undefined> {
+    const rows = await this.db
+      .update(routines)
+      .set({ isActive })
+      .where(eq(routines.id, id))
+      .returning();
+    return rows[0] ? this.normalize(rows[0]) : undefined;
+  }
+  async deleteRoutine(id: string): Promise<boolean> {
+    const rows = await this.db
+      .delete(routines)
+      .where(eq(routines.id, id))
+      .returning({ id: routines.id });
+    return rows.length > 0;
+  }
+}
+
+const connectionString = process.env.DATABASE_URL;
+export const storage: IStorage = connectionString
+  ? new PostgresStorage(connectionString)
+  : new MemStorage();
