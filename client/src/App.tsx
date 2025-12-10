@@ -33,12 +33,12 @@ function AppLayout() {
     <SidebarProvider style={style as React.CSSProperties}>
       <div className="flex h-screen w-full">
         <AppSidebar routines={routines} />
-        <SidebarInset className="flex flex-col flex-1 overflow-hidden">
+        <SidebarInset className="flex flex-col min-h-0 flex-1 overflow-hidden">
           <header className="sticky top-0 z-50 flex h-14 items-center justify-between gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
             <SidebarTrigger data-testid="button-sidebar-toggle" />
             <ThemeToggle />
           </header>
-          <main className="flex-1 overflow-hidden">
+          <main className="flex-1 min-h-0 overflow-auto">
             <Switch>
               <Route path="/" component={Dashboard} />
               <Route path="/routines" component={Routines} />

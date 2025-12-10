@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertRoutineSchema, type InsertRoutine, type Routine, frequencyTypes } from "@shared/schema";
+import { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -76,6 +77,32 @@ export function RoutineForm({ open, onOpenChange, routine, onSubmit, isPending }
       isActive: true,
     },
   });
+
+  useEffect(() => {
+    if (routine) {
+      form.reset({
+        name: routine.name,
+        description: routine.description || "",
+        frequencyType: routine.frequencyType,
+        frequencyValue: routine.frequencyValue,
+        startTime: routine.startTime,
+        duration: routine.duration,
+        durationUnit: routine.durationUnit,
+        isActive: routine.isActive,
+      });
+    } else {
+      form.reset({
+        name: "",
+        description: "",
+        frequencyType: "minute",
+        frequencyValue: 5,
+        startTime: "00:00",
+        duration: 30,
+        durationUnit: "minute",
+        isActive: true,
+      });
+    }
+  }, [routine, open]);
 
   const handleSubmit = (data: InsertRoutine) => {
     onSubmit(data);
